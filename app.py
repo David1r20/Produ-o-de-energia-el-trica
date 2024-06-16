@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import cross_val_score
 import numpy as np
 
 # URL do arquivo CSV no GitHub
@@ -23,7 +22,7 @@ def main():
         y = data['Net hourly electrical energy output']
 
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
         # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
         alpha_values = np.logspace(-4, 1, 10)  # Gera 10 valores logaritmicamente espaçados entre 0.0001 e 10
@@ -64,7 +63,7 @@ def main():
 
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
-        temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=60, value=25)
+        temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=25)
         vacuum = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=55)
         pressure = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=1010)
         humidity = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=50)
@@ -82,11 +81,11 @@ def main():
         predicted_energy_output_ridge = best_ridge.predict(input_data)[0]
 
         st.subheader("Previsões de Produção de Energia")
-        st.write(f"**Modelo Lasso Regression:**")
-        st.write(f"   A previsão de produção de energia elétrica é: {predicted_energy_output_lasso:.2f} MW")
+        st.markdown(f"### **Modelo Lasso Regression**")
+        st.markdown(f"**Previsão de produção de energia elétrica:** {predicted_energy_output_lasso:.2f} MW", unsafe_allow_html=True)
         
-        st.write(f"**Modelo Ridge Regression:**")
-        st.write(f"   A previsão de produção de energia elétrica é: {predicted_energy_output_ridge:.2f} MW")
+        st.markdown(f"### **Modelo Ridge Regression**")
+        st.markdown(f"**Previsão de produção de energia elétrica:** {predicted_energy_output_ridge:.2f} MW", unsafe_allow_html=True)
         
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
