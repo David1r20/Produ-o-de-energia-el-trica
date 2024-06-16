@@ -9,8 +9,9 @@ from sklearn.metrics import mean_squared_error, r2_score
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
-    # URL do arquivo CSV no GitHub
-        url = 'https://raw.githubusercontent.com/David1r20/repository/main/Power_data.csv'  # Substitua pela URL correta
+    # URL do arquivo CSV no GitHub (Use a URL raw)
+    url = 'https://raw.githubusercontent.com/David1r20/repository/main/Power_data.csv'  # Substitua pela URL correta
+
     
     if uploaded_file is not None:
         data = pd.read_csv(url)
