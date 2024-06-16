@@ -5,16 +5,17 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
 # Função principal do Streamlit
-@st.cache_data
+url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
+data = pd.read_csv(url)
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     # URL do arquivo CSV no GitHub (Use a URL raw)
-    url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
+    
 
     
     try:
-        data = pd.read_csv(url)
+        
 
         # Mostrar os primeiros registros do dataframe
         st.write("Primeiros registros do dataframe:")
