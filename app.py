@@ -10,7 +10,7 @@ def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     # URL do arquivo CSV no GitHub (Use a URL raw)
-    url = 'https://raw.githubusercontent.com/David1r20/repository/main/Power_data.csv'  # Substitua pela URL correta
+    url = 'https://github.com/David1r20/repository/blob/main/Power_data.csv'
 
     
     try:
