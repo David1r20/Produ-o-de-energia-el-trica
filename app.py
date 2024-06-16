@@ -64,7 +64,7 @@ def main():
 
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
-        temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=25)
+        temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=60, value=25)
         vacuum = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=55)
         pressure = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=1010)
         humidity = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=50)
