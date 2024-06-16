@@ -10,7 +10,7 @@ def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     # URL do arquivo CSV no GitHub
-    uploaded_file = pd.read_csv("data/Power_data.csv")
+    uploaded_file = pd.read_csv("./data/Power_data.csv")
     
     if uploaded_file is not None:
         data = pd.read_csv(uploaded_file)
