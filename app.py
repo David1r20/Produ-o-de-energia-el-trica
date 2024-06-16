@@ -81,11 +81,11 @@ def main():
         predicted_energy_output_ridge = best_ridge.predict(input_data)[0]
 
         st.subheader("Previsões de Produção de Energia")
-        st.markdown(f"### **Modelo Lasso Regression**")
-        st.markdown(f"**Previsão de produção de energia elétrica:** {predicted_energy_output_lasso:.2f} MW", unsafe_allow_html=True)
+        st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; color: blue;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_lasso:.2f} MW</h2>", unsafe_allow_html=True)
         
-        st.markdown(f"### **Modelo Ridge Regression**")
-        st.markdown(f"**Previsão de produção de energia elétrica:** {predicted_energy_output_ridge:.2f} MW", unsafe_allow_html=True)
+        st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; color: green;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h2>", unsafe_allow_html=True)
         
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
