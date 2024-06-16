@@ -11,13 +11,13 @@ def main():
     import pandas as pd
 
     # Carregar o arquivo CSV
-    #file_path = 'Power_data.csv'
-    #uploaded_file = pd.read_csv(file_path)
+    file_path = "Power_data.csv"
+    uploaded_file = pd.read_csv(file_path)
     # Upload do arquivo CSV
     #uploaded_file = st.file_uploader("Escolha um arquivo CSV", type="csv")
     
     if uploaded_file is not None:
-        data = pd.read_csv('Power_data.csv')
+        data = pd.read_csv(uploaded_file)
 
         # Mostrar os primeiros registros do dataframe
         st.write("Primeiros registros do dataframe:")
