@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import cross_val_score
 
 # URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
@@ -23,39 +24,38 @@ def main():
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Criar e treinar os modelos
-        model_lr = LinearRegression()
-        model_lasso = Lasso(alpha=0.5)
-        model_ridge = Ridge(alpha=5.0)
+        # Grid de parâmetros para Lasso e Ridge
+        param_grid_lasso = {'alpha': [0.01, 0.1, 1, 10, 100]}
+        param_grid_ridge = {'alpha': [0.01, 0.1, 1, 10, 100]}
 
-        model_lr.fit(X_train, y_train)
-        model_lasso.fit(X_train, y_train)
-        model_ridge.fit(X_train, y_train)
+        # Configurar GridSearchCV para Lasso
+        lasso = Lasso()
+        grid_search_lasso = GridSearchCV(lasso, param_grid_lasso, cv=5, scoring='neg_mean_squared_error')
+        grid_search_lasso.fit(X_train, y_train)
+        best_lasso = grid_search_lasso.best_estimator_
 
-        # Fazer previsões
-        y_pred_lr = model_lr.predict(X_test)
-        y_pred_lasso = model_lasso.predict(X_test)
-        y_pred_ridge = model_ridge.predict(X_test)
+        # Configurar GridSearchCV para Ridge
+        ridge = Ridge()
+        grid_search_ridge = GridSearchCV(ridge, param_grid_ridge, cv=5, scoring='neg_mean_squared_error')
+        grid_search_ridge.fit(X_train, y_train)
+        best_ridge = grid_search_ridge.best_estimator_
 
-        # Avaliar os modelos
+        # Avaliar os modelos ajustados
+        y_pred_lr = grid_search_lasso.predict(X_test)
+        y_pred_ridge = grid_search_ridge.predict(X_test)
+        
         mse_lr = mean_squared_error(y_test, y_pred_lr)
-        mse_lasso = mean_squared_error(y_test, y_pred_lasso)
         mse_ridge = mean_squared_error(y_test, y_pred_ridge)
 
         r2_lr = r2_score(y_test, y_pred_lr)
-        r2_lasso = r2_score(y_test, y_pred_lasso)
         r2_ridge = r2_score(y_test, y_pred_ridge)
 
-        st.subheader("Avaliação dos Modelos")
-        st.write(f"**Modelo Linear Regression:**")
+        st.subheader("Avaliação dos Modelos Ajustados")
+        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
         st.write(f"   R-squared (R2): {r2_lr:.2f}")
 
-        st.write(f"**Modelo Lasso Regression:**")
-        st.write(f"   Mean Squared Error (MSE): {mse_lasso:.2f}")
-        st.write(f"   R-squared (R2): {r2_lasso:.2f}")
-
-        st.write(f"**Modelo Ridge Regression:**")
+        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
         st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
@@ -74,18 +74,14 @@ def main():
             'Relative humidity': [humidity]
         })
 
-        # Fazer previsões com os dados de entrada
-        predicted_energy_output_lr = model_lr.predict(input_data)[0]
-        predicted_energy_output_lasso = model_lasso.predict(input_data)[0]
-        predicted_energy_output_ridge = model_ridge.predict(input_data)[0]
+        # Fazer previsões com os modelos ajustados
+        predicted_energy_output_lasso = best_lasso.predict(input_data)[0]
+        predicted_energy_output_ridge = best_ridge.predict(input_data)[0]
 
         st.subheader("Previsões de Produção de Energia")
-        st.write(f"**Modelo Linear Regression:**")
-        st.write(f"   A previsão de produção de energia elétrica é: {predicted_energy_output_lr:.2f} MW")
-        
         st.write(f"**Modelo Lasso Regression:**")
         st.write(f"   A previsão de produção de energia elétrica é: {predicted_energy_output_lasso:.2f} MW")
-
+        
         st.write(f"**Modelo Ridge Regression:**")
         st.write(f"   A previsão de produção de energia elétrica é: {predicted_energy_output_ridge:.2f} MW")
         
