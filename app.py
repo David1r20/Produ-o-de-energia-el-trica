@@ -10,10 +10,10 @@ def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     # URL do arquivo CSV no GitHub
-    uploaded_file = st.file_uploader("Power_data.csv")
+        url = 'https://raw.githubusercontent.com/David1r20/repository/main/Power_data.csv'  # Substitua pela URL correta
     
     if uploaded_file is not None:
-        data = pd.read_csv(uploaded_file)
+        data = pd.read_csv(url)
 
         # Mostrar os primeiros registros do dataframe
         st.write("Primeiros registros do dataframe:")
