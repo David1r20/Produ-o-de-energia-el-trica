@@ -13,10 +13,7 @@ def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     try:
-        # Mostrar os primeiros registros do dataframe
-        st.subheader("Dados do Dataset")
-        st.write(data.head())
-
+        
         # Definir variáveis independentes (X) e dependente (y)
         X = data[['Avg temperature', 'Exhaust vacuum', 'Ambient pressure', 'Relative humidity']]
         y = data['Net hourly electrical energy output']
@@ -52,14 +49,7 @@ def main():
         r2_lr = r2_score(y_test, y_pred_lr)
         r2_ridge = r2_score(y_test, y_pred_ridge)
 
-        st.subheader("Avaliação dos Modelos Ajustados")
-        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
-        st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
-        st.write(f"   R-squared (R2): {r2_lr:.2f}")
-
-        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
-        st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
-        st.write(f"   R-squared (R2): {r2_ridge:.2f}")
+        
 
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
@@ -86,6 +76,20 @@ def main():
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
         st.markdown(f"<h2 style='text-align: center; color: green;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h2>", unsafe_allow_html=True)
+
+        st.subheader("Avaliação dos Modelos Ajustados")
+        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
+        st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
+        st.write(f"   R-squared (R2): {r2_lr:.2f}")
+
+        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
+        st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
+        st.write(f"   R-squared (R2): {r2_ridge:.2f}")
+
+        # Mostrar os primeiros registros do dataframe
+        st.subheader("Dados do Dataset")
+        st.write(data.head())
+
         
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
