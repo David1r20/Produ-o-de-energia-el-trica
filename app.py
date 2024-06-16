@@ -13,7 +13,7 @@ def main():
     url = 'https://raw.githubusercontent.com/David1r20/repository/main/Power_data.csv'  # Substitua pela URL correta
 
     
-    if uploaded_file is not None:
+    try:
         data = pd.read_csv(url)
 
         # Mostrar os primeiros registros do dataframe
@@ -63,6 +63,7 @@ def main():
 
         # Mostrar a previsão
         st.write(f"A previsão de produção de energia elétrica é: {predicted_energy_output:.2f} MW")
-
+    except Exception as e:
+        st.error(f"Erro ao carregar o arquivo CSV: {e}")
 if __name__ == "__main__":
     main()
