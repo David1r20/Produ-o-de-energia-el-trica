@@ -25,8 +25,8 @@ def main():
 
         # Criar e treinar os modelos
         model_lr = LinearRegression()
-        model_lasso = Lasso(alpha=0.1)
-        model_ridge = Ridge(alpha=1.0)
+        model_lasso = Lasso(alpha=0.5)
+        model_ridge = Ridge(alpha=5.0)
 
         model_lr.fit(X_train, y_train)
         model_lasso.fit(X_train, y_train)
