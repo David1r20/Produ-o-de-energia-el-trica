@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import cross_val_score
+import numpy as np
 
 # URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
@@ -22,11 +23,13 @@ def main():
         y = data['Net hourly electrical energy output']
 
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Grid de parâmetros para Lasso e Ridge
-        param_grid_lasso = {'alpha': [0.01, 0.1, 1, 10, 100]}
-        param_grid_ridge = {'alpha': [0.01, 0.1, 1, 10, 100]}
+        # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
+        alpha_values = np.logspace(-4, 1, 10)  # Gera 10 valores logaritmicamente espaçados entre 0.0001 e 10
+
+        param_grid_lasso = {'alpha': alpha_values}
+        param_grid_ridge = {'alpha': alpha_values}
 
         # Configurar GridSearchCV para Lasso
         lasso = Lasso()
