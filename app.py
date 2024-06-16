@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
 # Função principal do Streamlit
+@st.cache_data
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
