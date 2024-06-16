@@ -4,21 +4,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
-# Função principal do Streamlit
+# URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
 data = pd.read_csv(url)
+
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
-    # URL do arquivo CSV no GitHub (Use a URL raw)
-    
-
-    
     try:
-        
-
         # Mostrar os primeiros registros do dataframe
-        st.write("Primeiros registros do dataframe:")
+        st.subheader("Dados do Dataset")
         st.write(data.head())
 
         # Definir variáveis independentes (X) e dependente (y)
@@ -39,10 +34,11 @@ def main():
         mse = mean_squared_error(y_test, y_pred)
         r2 = r2_score(y_test, y_pred)
 
-        st.write(f"Mean Squared Error (MSE): {mse}")
-        st.write(f"R-squared (R2): {r2}")
-        st.write(f"Coeficientes do modelo: {model.coef_}")
-        st.write(f"Intercepto do modelo: {model.intercept_}")
+        st.subheader("Avaliação do Modelo")
+        st.write(f"**Mean Squared Error (MSE):** {mse:.2f}")
+        st.write(f"**R-squared (R2):** {r2:.2f}")
+        st.write(f"**Coeficientes do Modelo:** {model.coef_}")
+        st.write(f"**Intercepto do Modelo:** {model.intercept_}")
 
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
@@ -62,9 +58,10 @@ def main():
         # Fazer previsão com os dados de entrada
         predicted_energy_output = model.predict(input_data)[0]
 
-        # Mostrar a previsão
-        st.write(f"A previsão de produção de energia elétrica é: {predicted_energy_output:.2f} MW")
+        st.subheader("Previsão de Produção de Energia")
+        st.write(f"**A previsão de produção de energia elétrica é:** {predicted_energy_output:.2f} MW")
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
+
 if __name__ == "__main__":
     main()
