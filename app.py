@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # URL do arquivo CSV no GitHub
-url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-elétrica/main/Power_data.csv'
+url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
 data = pd.read_csv(url)
 
 def main():
