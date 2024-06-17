@@ -6,9 +6,10 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # URL do arquivo CSV no GitHub
-url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
+url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-elétrica/main/Power_data.csv'
 data = pd.read_csv(url)
 
 def main():
@@ -41,6 +42,27 @@ def main():
     try:
         st.subheader("Dados do Dataset")
         st.write(data.head())
+
+        # Visualização das distribuições das variáveis
+        st.subheader("Distribuição das Variáveis")
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        sns.histplot(data['Avg temperature'], kde=True, ax=axes[0, 0])
+        axes[0, 0].set_title('Distribuição da Temperatura Média')
+        sns.histplot(data['Exhaust vacuum'], kde=True, ax=axes[0, 1])
+        axes[0, 1].set_title('Distribuição do Vácuo de Exaustão')
+        sns.histplot(data['Ambient pressure'], kde=True, ax=axes[1, 0])
+        axes[1, 0].set_title('Distribuição da Pressão Ambiente')
+        sns.histplot(data['Relative humidity'], kde=True, ax=axes[1, 1])
+        axes[1, 1].set_title('Distribuição da Umidade Relativa')
+        st.pyplot(fig)
+
+        # Matriz de correlação com mapa de calor
+        st.subheader("Matriz de Correlação")
+        corr_matrix = data.corr()
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+        plt.title('Mapa de Calor da Matriz de Correlação')
+        st.pyplot()
 
         # Definir variáveis independentes (X) e dependente (y)
         X = data[['Avg temperature', 'Exhaust vacuum', 'Ambient pressure', 'Relative humidity']]
@@ -129,8 +151,7 @@ def main():
         st.subheader("**Previsões de Produção de Energia em Tempo Real**")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MWh</span></h1>", unsafe_allow_html=True)
-        
-        st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
+                st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MWh</span></h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
@@ -174,3 +195,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+        
