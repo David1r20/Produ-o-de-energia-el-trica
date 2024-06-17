@@ -35,7 +35,7 @@ def main():
         alpha_ridge = 1.0
         alpha_elastic = 0.1
         l1_ratio_elastic = 0.5
-        n_neighbors_knn = 500  # Número fixo de vizinhos para KNN
+        n_neighbors_knn = 8  # Número fixo de vizinhos para KNN
 
         # Configurar modelos Lasso, Ridge, ElasticNet e KNN
         lasso = Lasso(alpha=alpha_lasso)
