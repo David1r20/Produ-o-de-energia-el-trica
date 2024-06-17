@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import Lasso, Ridge
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-import matplotlib.pyplot as plt
 
 # URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
@@ -96,33 +95,7 @@ def main():
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center; color: red;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
-
-        # Exemplos de previsões com gráficos
-        st.subheader("Exemplos de Previsões")
-        examples = [
-            {"Avg temperature": 20, "Exhaust vacuum": 40, "Ambient pressure": 1000, "Relative humidity": 60},
-            {"Avg temperature": 30, "Exhaust vacuum": 50, "Ambient pressure": 950, "Relative humidity": 70},
-            {"Avg temperature": 25, "Exhaust vacuum": 55, "Ambient pressure": 1010, "Relative humidity": 50},
-            {"Avg temperature": 15, "Exhaust vacuum": 35, "Ambient pressure": 980, "Relative humidity": 80}
-        ]
-
-        fig, ax = plt.subplots(2, 2, figsize=(14, 10))
-        for i, (example, ax_row) in enumerate(zip(examples, ax.flatten()), start=1):
-            input_data_example = pd.DataFrame([example])
-            input_data_scaled_example = scaler.transform(input_data_example)
-            pred_lasso_example = best_lasso.predict(input_data_scaled_example)[0]
-            pred_ridge_example = best_ridge.predict(input_data_scaled_example)[0]
-            
-            ax_row.plot([0, 1], [pred_lasso_example, pred_ridge_example], marker='o')
-            ax_row.set_title(f"Exemplo {i}")
-            ax_row.set_xticks([0, 1])
-            ax_row.set_xticklabels(['Lasso', 'Ridge'])
-            ax_row.set_ylabel("Produção de Energia (MW)")
-            ax_row.set_ylim([0, max(pred_lasso_example, pred_ridge_example) + 10])
-            ax_row.grid(True)
-
-        st.pyplot(fig)
-
+        
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
