@@ -31,10 +31,10 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
         # Definir valores fixos para alpha
-        alpha_lasso = 0.01
+        alpha_lasso = 1.0
         alpha_ridge = 1.0
-        alpha_elastic = 0.1
-        l1_ratio_elastic = 0.5
+        alpha_elastic = 1.0
+        l1_ratio_elastic = 1.0
 
         # Configurar modelos Lasso, Ridge, ElasticNet e Decision Tree
         lasso = Lasso(alpha=alpha_lasso)
