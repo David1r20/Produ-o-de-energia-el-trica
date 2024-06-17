@@ -28,7 +28,7 @@ def main():
         X_scaled = scaler.fit_transform(X)
 
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.05, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=60)
 
         # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
         alpha_values = np.logspace(-4, 1, 10)  # Gera 10 valores logaritmicamente espaçados entre 0.0001 e 10
