@@ -15,7 +15,7 @@ def main():
     st.title("Previsão de Produção de Energia Elétrica")
     st.write("""
     Este conjunto de dados contém dados operacionais de uma usina de energia, detalhando vários fatores ambientais e operacionais,
-    juntamente com a produção líquida de energia elétrica por hora. É útil para analisar a influência das condições ambientais no
+    juntamente com a produção líquida de energia elétrica por hora. Será analizado influência das condições ambientais no
     desempenho da usina e pode ser usado para modelagem preditiva e estudos de otimização.
     
     **Características:**
