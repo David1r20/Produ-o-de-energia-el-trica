@@ -1,21 +1,22 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.linear_model import Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
-import numpy as np
 
 # URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
-
 data = pd.read_csv(url)
 
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
+
     st.write("""
     Este conjunto de dados contém dados operacionais de uma usina de energia, detalhando vários fatores ambientais e operacionais,
-    juntamente com a produção líquida de energia elétrica por hora. Será analizado influência das condições ambientais no
+    juntamente com a produção líquida de energia elétrica por hora. Será analisado a influência das condições ambientais no
     desempenho da usina e pode ser usado para modelagem preditiva e estudos de otimização.
     
     **Características:**
@@ -26,11 +27,10 @@ def main():
     - Produção líquida de energia elétrica horária: Produção líquida de energia elétrica horária (em MW).
     
     **Uso:**
-    Este conjunto de dados será usa para análise de regressão Lasso e Ridge.
-""")
+    Este conjunto de dados será usado para análise de regressão Lasso e Ridge.
+    """)
 
     try:
-        # Mostrar os primeiros registros do dataframe
         st.subheader("Dados do Dataset")
         st.write(data.head())
 
@@ -46,7 +46,7 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
         # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
-        alpha_values = np.logspace(-4, 1, 10)  # Gera 10 valores logaritmicamente espaçados entre 0.0001 e 10
+        alpha_values = np.logspace(-4, 1, 10)
 
         param_grid_lasso = {'alpha': alpha_values}
         param_grid_ridge = {'alpha': alpha_values}
@@ -66,7 +66,7 @@ def main():
         # Avaliar os modelos ajustados
         y_pred_lr = grid_search_lasso.predict(X_test)
         y_pred_ridge = grid_search_ridge.predict(X_test)
-        
+
         mse_lr = mean_squared_error(y_test, y_pred_lr)
         mse_ridge = mean_squared_error(y_test, y_pred_ridge)
 
@@ -83,34 +83,42 @@ def main():
         st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
         # Widgets para entrada de parâmetros de previsão
-        st.sidebar.header("Parâmetros de Previsão")
-        temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=25)
-        vacuum = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=55)
-        pressure = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=1010)
-        humidity = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=50)
+        st.sidebar.header("Parâmetros de Previsão Mensal")
+        temperature_range = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=(20, 30))
+        vacuum_range = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=(40, 60))
+        pressure_range = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=(950, 1050))
+        humidity_range = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=(40, 60))
 
-        # Criar um dataframe com os dados de entrada
-        input_data = pd.DataFrame({
-            'Avg temperature': [temperature],
-            'Exhaust vacuum': [vacuum],
-            'Ambient pressure': [pressure],
-            'Relative humidity': [humidity]
+        # Gerar previsões para um mês (30 dias)
+        days = np.arange(1, 31)
+        temperatures = np.random.uniform(temperature_range[0], temperature_range[1], size=30)
+        vacuums = np.random.uniform(vacuum_range[0], vacuum_range[1], size=30)
+        pressures = np.random.uniform(pressure_range[0], pressure_range[1], size=30)
+        humidities = np.random.uniform(humidity_range[0], humidity_range[1], size=30)
+
+        monthly_data = pd.DataFrame({
+            'Avg temperature': temperatures,
+            'Exhaust vacuum': vacuums,
+            'Ambient pressure': pressures,
+            'Relative humidity': humidities
         })
 
-        # Normalizar os dados de entrada
-        input_data_scaled = scaler.transform(input_data)
+        monthly_data_scaled = scaler.transform(monthly_data)
 
-        # Fazer previsões com os modelos ajustados
-        predicted_energy_output_lasso = best_lasso.predict(input_data_scaled)[0]
-        predicted_energy_output_ridge = best_ridge.predict(input_data_scaled)[0]
+        # Previsões
+        predictions_lasso = best_lasso.predict(monthly_data_scaled)
+        predictions_ridge = best_ridge.predict(monthly_data_scaled)
 
-        st.subheader("Previsões de Produção de Energia")
-        st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MW</span></h1>", unsafe_allow_html=True)
-        
-        st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MW</span></h1>", unsafe_allow_html=True)
-        
+        # Plotar resultados
+        fig, ax = plt.subplots()
+        ax.plot(days, predictions_lasso, label='Lasso Regression', color='blue')
+        ax.plot(days, predictions_ridge, label='Ridge Regression', color='red')
+        ax.set_xlabel('Dia do Mês')
+        ax.set_ylabel('Produção de Energia (MW)')
+        ax.set_title('Previsão de Produção de Energia Elétrica Mensal')
+        ax.legend()
+        st.pyplot(fig)
+
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
