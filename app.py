@@ -108,16 +108,16 @@ def main():
 
         st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MW</span></h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Lasso: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MW</span></h1>", unsafe_allow_html=True)
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MW</span></h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Ridge: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MW</span></h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MW</span></h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Elastic Net: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MW</span></h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo K-Nearest Neighbors**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_knn:.2f} MW</span></h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão KNN: <span style='color: red;'>{predicted_energy_output_knn:.2f} MW</span></h1>", unsafe_allow_html=True)
 
         # Previsão mensal com valores aleatórios
         st.subheader("Previsão Mensal com Valores Aleatórios")
