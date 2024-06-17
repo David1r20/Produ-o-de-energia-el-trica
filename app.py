@@ -84,7 +84,7 @@ def main():
         st.write(f"**Modelo Elastic Net Regression (Alpha: {alpha_elastic}, L1 Ratio: {l1_ratio_elastic}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_elastic:.2f}")
         st.write(f"   R-squared (R2): {r2_elastic:.2f}")
-
+        
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
         temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=25)
@@ -103,6 +103,12 @@ def main():
         # Normalizar os dados de entrada
         input_data_scaled = scaler.transform(input_data)
 
+
+        st.write("""
+
+
+            
+        """)
         # Fazer previsões com os modelos ajustados
         predicted_energy_output_lasso = lasso.predict(input_data_scaled)[0]
         predicted_energy_output_ridge = ridge.predict(input_data_scaled)[0]
