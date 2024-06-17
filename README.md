@@ -1,4 +1,4 @@
-# Produ-o-de-energia-el-trica
+# Previsão de Produção de Energia Elétrica
 
 Link para executar o projeto:
 https://appu-o-de-energia-el-trica-vjxk6rltneg5hkxvfnhrcv.streamlit.app/
