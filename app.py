@@ -30,9 +30,9 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
         # Configurar parâmetros para GridSearch
-        param_grid_lasso = {'alpha': np.logspace(-4, 1, 100)}
-        param_grid_ridge = {'alpha': np.logspace(-4, 1, 100)}
-        param_grid_elastic = {'alpha': np.logspace(-4, 1, 100), 'l1_ratio': np.linspace(0, 1, 100)}
+        param_grid_lasso = {'alpha': np.logspace(-4, 1, 5)}
+        param_grid_ridge = {'alpha': np.logspace(-4, 1, 5)}
+        param_grid_elastic = {'alpha': np.logspace(-4, 1, 5), 'l1_ratio': np.linspace(0, 1, 100)}
 
         # Configurar modelos Lasso, Ridge e ElasticNet
         lasso = Lasso()
