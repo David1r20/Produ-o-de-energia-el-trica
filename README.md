@@ -1,4 +1,8 @@
 # Produ-o-de-energia-el-trica
+
+Link para executar o projeto:
+https://appu-o-de-energia-el-trica-vjxk6rltneg5hkxvfnhrcv.streamlit.app/
+
 Previsão de Produção de Energia Elétrica
 
 Para desenvolver um entendimento abrangente sobre o desempenho de uma usina de energia e otimizar sua operação, é essencial analisar como diferentes fatores ambientais e operacionais influenciam a produção de energia. O código apresentado aqui é uma aplicação prática voltada para a previsão da produção de energia elétrica com base em variáveis ambientais específicas. A seguir, explicaremos a relevância e a aplicação deste código.
