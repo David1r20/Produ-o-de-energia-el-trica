@@ -151,7 +151,7 @@ def main():
         st.subheader("**Previsões de Produção de Energia em Tempo Real**")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MWh</span></h1>", unsafe_allow_html=True)
-                st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
+        st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MWh</span></h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
