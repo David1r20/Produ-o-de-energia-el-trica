@@ -96,13 +96,13 @@ def main():
 
         st.subheader("**Previsões de Produção de Energia**")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: blue;'>Previsão Lasso: {predicted_energy_output_lasso:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Lasso: {predicted_energy_output_lasso:.2f} MW</h1>", unsafe_allow_html=True)
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: red;'>Previsão Ridge: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Ridge: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: green;'>Previsão Elastic Net: {predicted_energy_output_elastic:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Elastic Net: {predicted_energy_output_elastic:.2f} MW</h1>", unsafe_allow_html=True)
 
         # Previsão mensal com valores aleatórios
         st.subheader("Previsão Mensal com Valores Aleatórios")
@@ -126,9 +126,9 @@ def main():
         predictions_elastic = elastic.predict(monthly_data_scaled)
 
         fig, ax = plt.subplots()
-        ax.plot(days, predictions_lasso, label='Lasso Regression', color='white')
-        ax.plot(days, predictions_ridge, label='Ridge Regression', color='white')
-        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='white')
+        ax.plot(days, predictions_lasso, label='Lasso Regression', color='red')
+        ax.plot(days, predictions_ridge, label='Ridge Regression', color='green')
+        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='blue')
         ax.set_xlabel('Dia do Mês')
         ax.set_ylabel('Produção de Energia (MW)')
         ax.set_title('Previsão de Produção de Energia Elétrica Mensal')
