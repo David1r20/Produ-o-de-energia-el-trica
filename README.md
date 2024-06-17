@@ -1,6 +1,6 @@
 # Previsão de Produção de Energia Elétrica
 
-Link para executar o projeto:
+Teste o projeto aqui:
 https://appu-o-de-energia-el-trica-vjxk6rltneg5hkxvfnhrcv.streamlit.app/
 
 Previsão de Produção de Energia Elétrica
