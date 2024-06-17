@@ -32,7 +32,7 @@ def main():
         # Configurar parâmetros para GridSearch
         param_grid_lasso = {'alpha': np.logspace(-4, 1, 5)}
         param_grid_ridge = {'alpha': np.logspace(-4, 1, 5)}
-        param_grid_elastic = {'alpha': np.logspace(-4, 1, 5), 'l1_ratio': np.linspace(0, 1, 100)}
+        param_grid_elastic = {'alpha': np.logspace(-4, 1, 5), 'l1_ratio': np.linspace(0, 1, 1)}
 
         # Configurar modelos Lasso, Ridge e ElasticNet
         lasso = Lasso()
