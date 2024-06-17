@@ -126,9 +126,9 @@ def main():
         predictions_elastic = elastic.predict(monthly_data_scaled)
 
         fig, ax = plt.subplots()
-        ax.plot(days, predictions_lasso, label='Lasso Regression', color='blue')
-        ax.plot(days, predictions_ridge, label='Ridge Regression', color='red')
-        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='green')
+        ax.plot(days, predictions_lasso, label='Lasso Regression', color='white')
+        ax.plot(days, predictions_ridge, label='Ridge Regression', color='white')
+        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='white')
         ax.set_xlabel('Dia do Mês')
         ax.set_ylabel('Produção de Energia (MW)')
         ax.set_title('Previsão de Produção de Energia Elétrica Mensal')
