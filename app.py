@@ -159,7 +159,7 @@ def main():
         ax.legend()
         st.pyplot(fig)
         
-    except Exception as:
+    except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
 if __name__ == "__main__":
