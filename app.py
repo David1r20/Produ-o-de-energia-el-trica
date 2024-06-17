@@ -144,7 +144,7 @@ def main():
         fig, ax = plt.subplots()
         ax.plot(days, predictions_lasso, label='Lasso Regression', color='blue')
         ax.plot(days, predictions_ridge, label='Ridge Regression', color='red')
-        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='purple')
+        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='green')
         ax.plot(days, predictions_knn, label='KNN Regression', color='green')
         ax.set_xlabel('Dia do Mês')
         ax.set_ylabel('Produção de Energia (MW)')
