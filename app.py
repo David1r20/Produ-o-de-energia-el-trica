@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
@@ -45,27 +45,21 @@ def main():
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
-        # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
-        alpha_values = np.logspace(-4, 1, 10)
+        # Definir valores fixos para alpha
+        alpha_lasso = 0.01
+        alpha_ridge = 1.0
 
-        param_grid_lasso = {'alpha': alpha_values}
-        param_grid_ridge = {'alpha': alpha_values}
+        # Configurar modelos Lasso e Ridge
+        lasso = Lasso(alpha=alpha_lasso)
+        ridge = Ridge(alpha=alpha_ridge)
 
-        # Configurar GridSearchCV para Lasso
-        lasso = Lasso()
-        grid_search_lasso = GridSearchCV(lasso, param_grid_lasso, cv=5, scoring='neg_mean_squared_error')
-        grid_search_lasso.fit(X_train, y_train)
-        best_lasso = grid_search_lasso.best_estimator_
-
-        # Configurar GridSearchCV para Ridge
-        ridge = Ridge()
-        grid_search_ridge = GridSearchCV(ridge, param_grid_ridge, cv=5, scoring='neg_mean_squared_error')
-        grid_search_ridge.fit(X_train, y_train)
-        best_ridge = grid_search_ridge.best_estimator_
+        # Ajustar os modelos
+        lasso.fit(X_train, y_train)
+        ridge.fit(X_train, y_train)
 
         # Avaliar os modelos ajustados
-        y_pred_lr = grid_search_lasso.predict(X_test)
-        y_pred_ridge = grid_search_ridge.predict(X_test)
+        y_pred_lr = lasso.predict(X_test)
+        y_pred_ridge = ridge.predict(X_test)
 
         mse_lr = mean_squared_error(y_test, y_pred_lr)
         mse_ridge = mean_squared_error(y_test, y_pred_ridge)
@@ -74,15 +68,15 @@ def main():
         r2_ridge = r2_score(y_test, y_pred_ridge)
 
         st.subheader("Avaliação dos Modelos Ajustados")
-        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
+        st.write(f"**Modelo Lasso Regression (Alpha: {alpha_lasso}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
         st.write(f"   R-squared (R2): {r2_lr:.2f}")
 
-        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
+        st.write(f"**Modelo Ridge Regression (Alpha: {alpha_ridge}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
         st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
-        # Widgets para entrada de parâmetros de previsão
+        # Widgets para entrada de parâmetros de previsão mensal
         st.sidebar.header("Parâmetros de Previsão Mensal")
         temperature_range = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=(20, 30))
         vacuum_range = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=(40, 60))
@@ -106,8 +100,8 @@ def main():
         monthly_data_scaled = scaler.transform(monthly_data)
 
         # Previsões
-        predictions_lasso = best_lasso.predict(monthly_data_scaled)
-        predictions_ridge = best_ridge.predict(monthly_data_scaled)
+        predictions_lasso = lasso.predict(monthly_data_scaled)
+        predictions_ridge = ridge.predict(monthly_data_scaled)
 
         # Plotar resultados
         fig, ax = plt.subplots()
