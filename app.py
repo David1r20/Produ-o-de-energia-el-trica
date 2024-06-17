@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import Lasso, Ridge, ElasticNet
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
@@ -43,25 +43,38 @@ def main():
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.15, random_state=45)
 
-        # Definir valores fixos para alpha e parâmetros dos modelos
-        alpha_lasso = 0.1
-        alpha_ridge = 0.1
-        alpha_elastic = 0.1
-        l1_ratio_elastic = 0.5
+        # Definir os parâmetros para a busca por grid
+        param_grid = {
+            'alpha': [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+        }
+
         # Configurar modelos Lasso, Ridge e ElasticNet
-        lasso = Lasso(alpha=alpha_lasso)
-        ridge = Ridge(alpha=alpha_ridge)
-        elastic = ElasticNet(alpha=alpha_elastic, l1_ratio=l1_ratio_elastic)
+        lasso = Lasso()
+        ridge = Ridge()
+        elastic = ElasticNet()
 
-        # Ajustar os modelos
-        lasso.fit(X_train, y_train)
-        ridge.fit(X_train, y_train)
-        elastic.fit(X_train, y_train)
+        # Realizar busca por grid para Lasso
+        grid_search_lasso = GridSearchCV(estimator=lasso, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        grid_search_lasso.fit(X_train, y_train)
+        best_alpha_lasso = grid_search_lasso.best_params_['alpha']
+        best_model_lasso = grid_search_lasso.best_estimator_
 
-        # Avaliar os modelos ajustados
-        y_pred_lr = lasso.predict(X_test)
-        y_pred_ridge = ridge.predict(X_test)
-        y_pred_elastic = elastic.predict(X_test)
+        # Realizar busca por grid para Ridge
+        grid_search_ridge = GridSearchCV(estimator=ridge, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        grid_search_ridge.fit(X_train, y_train)
+        best_alpha_ridge = grid_search_ridge.best_params_['alpha']
+        best_model_ridge = grid_search_ridge.best_estimator_
+
+        # Realizar busca por grid para ElasticNet
+        grid_search_elastic = GridSearchCV(estimator=elastic, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        grid_search_elastic.fit(X_train, y_train)
+        best_alpha_elastic = grid_search_elastic.best_params_['alpha']
+        best_model_elastic = grid_search_elastic.best_estimator_
+
+        # Avaliar os modelos ajustados com os melhores parâmetros
+        y_pred_lr = best_model_lasso.predict(X_test)
+        y_pred_ridge = best_model_ridge.predict(X_test)
+        y_pred_elastic = best_model_elastic.predict(X_test)
 
         mse_lr = mean_squared_error(y_test, y_pred_lr)
         mse_ridge = mean_squared_error(y_test, y_pred_ridge)
@@ -72,15 +85,15 @@ def main():
         r2_elastic = r2_score(y_test, y_pred_elastic)
 
         st.subheader("Avaliação dos Modelos Ajustados")
-        st.write(f"**Modelo Lasso Regression (Alpha: {alpha_lasso}):**")
+        st.write(f"**Modelo Lasso Regression (Alpha: {best_alpha_lasso}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
         st.write(f"   R-squared (R2): {r2_lr:.2f}")
 
-        st.write(f"**Modelo Ridge Regression (Alpha: {alpha_ridge}):**")
+        st.write(f"**Modelo Ridge Regression (Alpha: {best_alpha_ridge}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
         st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
-        st.write(f"**Modelo Elastic Net Regression (Alpha: {alpha_elastic}, L1 Ratio: {l1_ratio_elastic}):**")
+        st.write(f"**Modelo Elastic Net Regression (Alpha: {best_alpha_elastic}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_elastic:.2f}")
         st.write(f"   R-squared (R2): {r2_elastic:.2f}")
         
@@ -101,18 +114,11 @@ def main():
 
         # Normalizar os dados de entrada
         input_data_scaled = scaler.transform(input_data)
-        st.write("""
 
-
-
-
-
-            
-        """)
-        # Fazer previsões com os modelos ajustados
-        predicted_energy_output_lasso = lasso.predict(input_data_scaled)[0]
-        predicted_energy_output_ridge = ridge.predict(input_data_scaled)[0]
-        predicted_energy_output_elastic = elastic.predict(input_data_scaled)[0]
+        # Fazer previsões com os modelos ajustados com os melhores parâmetros
+        predicted_energy_output_lasso = best_model_lasso.predict(input_data_scaled)[0]
+        predicted_energy_output_ridge = best_model_ridge.predict(input_data_scaled)[0]
+        predicted_energy_output_elastic = best_model_elastic.predict(input_data_scaled)[0]
 
         st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
