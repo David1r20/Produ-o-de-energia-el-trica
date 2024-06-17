@@ -127,7 +127,7 @@ def main():
         predicted_energy_output_ridge = ridge.predict(input_data_scaled)[0]
         predicted_energy_output_elastic = elastic.predict(input_data_scaled)[0]
 
-        st.subheader("Previsões de Produção de Energia")
+        st.subheader("**Previsões de Produção de Energia em tempo real**")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MWh</span></h1>", unsafe_allow_html=True)
         
