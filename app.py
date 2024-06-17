@@ -3,23 +3,32 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 # URL do arquivo CSV no GitHub
 url = 'https://raw.githubusercontent.com/David1r20/Produ-o-de-energia-el-trica/main/Power_data.csv'
+
 data = pd.read_csv(url)
 
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
 
     try:
-        
+        # Mostrar os primeiros registros do dataframe
+        st.subheader("Dados do Dataset")
+        st.write(data.head())
+
         # Definir variáveis independentes (X) e dependente (y)
         X = data[['Avg temperature', 'Exhaust vacuum', 'Ambient pressure', 'Relative humidity']]
         y = data['Net hourly electrical energy output']
 
+        # Normalizar os dados
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
         # Grid de parâmetros para Lasso e Ridge com sequência logarítmica
         alpha_values = np.logspace(-4, 1, 10)  # Gera 10 valores logaritmicamente espaçados entre 0.0001 e 10
@@ -49,7 +58,14 @@ def main():
         r2_lr = r2_score(y_test, y_pred_lr)
         r2_ridge = r2_score(y_test, y_pred_ridge)
 
-        
+        st.subheader("Avaliação dos Modelos Ajustados")
+        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
+        st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
+        st.write(f"   R-squared (R2): {r2_lr:.2f}")
+
+        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
+        st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
+        st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
@@ -66,30 +82,19 @@ def main():
             'Relative humidity': [humidity]
         })
 
+        # Normalizar os dados de entrada
+        input_data_scaled = scaler.transform(input_data)
+
         # Fazer previsões com os modelos ajustados
-        predicted_energy_output_lasso = best_lasso.predict(input_data)[0]
-        predicted_energy_output_ridge = best_ridge.predict(input_data)[0]
+        predicted_energy_output_lasso = best_lasso.predict(input_data_scaled)[0]
+        predicted_energy_output_ridge = best_ridge.predict(input_data_scaled)[0]
 
         st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h2 style='text-align: center; color: blue;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_lasso:.2f} MW</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: blue;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_lasso:.2f} MW</h1>", unsafe_allow_html=True)
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h2 style='text-align: center; color: green;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h2>", unsafe_allow_html=True)
-
-        st.subheader("Avaliação dos Modelos Ajustados")
-        st.write(f"**Modelo Lasso Regression (Melhor Alpha: {grid_search_lasso.best_params_['alpha']}):**")
-        st.write(f"   Mean Squared Error (MSE): {mse_lr:.2f}")
-        st.write(f"   R-squared (R2): {r2_lr:.2f}")
-
-        st.write(f"**Modelo Ridge Regression (Melhor Alpha: {grid_search_ridge.best_params_['alpha']}):**")
-        st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
-        st.write(f"   R-squared (R2): {r2_ridge:.2f}")
-
-        # Mostrar os primeiros registros do dataframe
-        st.subheader("Dados do Dataset")
-        st.write(data.head())
-
+        st.markdown(f"<h1 style='text-align: center; color: green;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
         
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
