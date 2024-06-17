@@ -59,10 +59,10 @@ def main():
         # Matriz de correlação com mapa de calor
         st.subheader("Matriz de Correlação")
         corr_matrix = data.corr()
-        plt.figure(figsize=(10, 8))
-        sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
-        plt.title('Mapa de Calor da Matriz de Correlação')
-        st.pyplot()
+        fig, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
+        ax.set_title('Mapa de Calor da Matriz de Correlação')
+        st.pyplot(fig)
     
         # Definir variáveis independentes (X) e dependente (y)
         X = data[['Avg temperature', 'Exhaust vacuum', 'Ambient pressure', 'Relative humidity']]
