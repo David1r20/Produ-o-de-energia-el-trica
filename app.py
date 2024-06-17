@@ -32,7 +32,7 @@ def main():
     - **Produção Líquida de Energia Elétrica Horária:** Produção líquida de energia elétrica horária (em MW).
     
     ### Aplicação do Código:
-    Este código realiza uma análise de regressão e aplica modelos de aprendizado de máquina para prever a produção 
+    Este código realiza uma análise de regressão para prever a produção 
     de energia elétrica com base nas condições ambientais e operacionais. O modelo é treinado com dados normalizados, 
     e os usuários podem ajustar os parâmetros para prever a produção de energia em diferentes cenários. 
     Além disso, o código gera previsões mensais com valores aleatórios, proporcionando uma visão abrangente das 
