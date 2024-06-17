@@ -3,6 +3,8 @@
 Teste o projeto aqui:
 https://appu-o-de-energia-el-trica-vjxk6rltneg5hkxvfnhrcv.streamlit.app/
 
+Dados/metadados link:https://www.kaggle.com/datasets/arjunaar2789/power-data
+
 Previsão de Produção de Energia Elétrica
 
 Para desenvolver um entendimento abrangente sobre o desempenho de uma usina de energia e otimizar sua operação, é essencial analisar como diferentes fatores ambientais e operacionais influenciam a produção de energia. O código apresentado aqui é uma aplicação prática voltada para a previsão da produção de energia elétrica com base em variáveis ambientais específicas. A seguir, explicaremos a relevância e a aplicação deste código.
