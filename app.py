@@ -27,7 +27,7 @@ def main():
         X_scaled = scaler.fit_transform(X)
 
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.25, random_state=45)
 
         # Definir valores fixos para alpha e parâmetros dos modelos
         alpha_lasso = 0.0001
