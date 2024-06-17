@@ -91,10 +91,10 @@ def main():
 
         st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_lasso:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MW</span></h1>", unsafe_allow_html=True)
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão de Produção de Energia Elétrica: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão de Produção de Energia Elétrica: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MW</span></h1>", unsafe_allow_html=True)
         
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
