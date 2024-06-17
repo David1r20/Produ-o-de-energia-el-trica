@@ -13,6 +13,21 @@ data = pd.read_csv(url)
 
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
+    st.write("""
+    Este conjunto de dados contém dados operacionais de uma usina de energia, detalhando vários fatores ambientais e operacionais,
+    juntamente com a produção líquida de energia elétrica por hora. É útil para analisar a influência das condições ambientais no
+    desempenho da usina e pode ser usado para modelagem preditiva e estudos de otimização.
+    
+    **Características:**
+    - Temperatura média: Temperatura ambiente média (em Celsius).
+    - Vácuo de exaustão: Pressão de vácuo do vapor que sai da turbina (em cm Hg).
+    - Pressão ambiente: Pressão ambiente (em milibares).
+    - Umidade relativa: Umidade relativa (%).
+    - Produção líquida de energia elétrica horária: Produção líquida de energia elétrica horária (em MW).
+    
+    **Uso:**
+    Este conjunto de dados será usa para análise de regressão Lasso e Ridge.
+""")
 
     try:
         # Mostrar os primeiros registros do dataframe
