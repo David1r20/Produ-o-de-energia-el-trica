@@ -30,9 +30,9 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.25, random_state=45)
 
         # Definir valores fixos para alpha e parâmetros dos modelos
-        alpha_lasso = 0.0001
-        alpha_ridge = 0.562
-        alpha_elastic = 0.0001
+        alpha_lasso = 0.01
+        alpha_ridge = 0.2
+        alpha_elastic = 0.01
         l1_ratio_elastic = 0.0
 
         # Configurar modelos Lasso, Ridge e ElasticNet
