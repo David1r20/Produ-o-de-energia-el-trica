@@ -33,7 +33,7 @@ def main():
         alpha_lasso = 0.1
         alpha_ridge = 0.1
         alpha_elastic = 0.1
-        l1_ratio_elastic = 0.1
+        l1_ratio_elastic = 0.5
 
         # Configurar modelos Lasso, Ridge e ElasticNet
         lasso = Lasso(alpha=alpha_lasso)
