@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.linear_model import Lasso, Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 import numpy as np
@@ -99,10 +99,10 @@ def main():
         # Exemplos de previsões
         st.subheader("Exemplos de Previsões")
         examples = [
-            {"temperature": 20, "vacuum": 40, "pressure": 1000, "humidity": 60},
-            {"temperature": 30, "vacuum": 50, "pressure": 950, "humidity": 70},
-            {"temperature": 25, "vacuum": 55, "pressure": 1010, "humidity": 50},
-            {"temperature": 15, "vacuum": 35, "pressure": 980, "humidity": 80}
+            {"Avg temperature": 20, "Exhaust vacuum": 40, "Ambient pressure": 1000, "Relative humidity": 60},
+            {"Avg temperature": 30, "Exhaust vacuum": 50, "Ambient pressure": 950, "Relative humidity": 70},
+            {"Avg temperature": 25, "Exhaust vacuum": 55, "Ambient pressure": 1010, "Relative humidity": 50},
+            {"Avg temperature": 15, "Exhaust vacuum": 35, "Ambient pressure": 980, "Relative humidity": 80}
         ]
         for i, example in enumerate(examples, start=1):
             input_data_example = pd.DataFrame([example])
@@ -110,10 +110,10 @@ def main():
             pred_lasso_example = best_lasso.predict(input_data_scaled_example)[0]
             pred_ridge_example = best_ridge.predict(input_data_scaled_example)[0]
             st.write(f"**Exemplo {i}:**")
-            st.write(f"   Temperatura: {example['temperature']} °C")
-            st.write(f"   Pressão de Vácuo: {example['vacuum']} cm Hg")
-            st.write(f"   Pressão Ambiente: {example['pressure']} mbar")
-            st.write(f"   Umidade Relativa: {example['humidity']} %")
+            st.write(f"   Temperatura: {example['Avg temperature']} °C")
+            st.write(f"   Pressão de Vácuo: {example['Exhaust vacuum']} cm Hg")
+            st.write(f"   Pressão Ambiente: {example['Ambient pressure']} mbar")
+            st.write(f"   Umidade Relativa: {example['Relative humidity']} %")
             st.write(f"   Previsão Lasso: {pred_lasso_example:.2f} MW")
             st.write(f"   Previsão Ridge: {pred_ridge_example:.2f} MW")
             st.write("")
