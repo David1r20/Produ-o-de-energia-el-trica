@@ -95,12 +95,21 @@ def main():
         st.write(f"   Mean Squared Error (MSE): {mse_elastic:.2f}")
         st.write(f"   R-squared (R2): {r2_elastic:.2f}")
 
+        st.write("""
+        Os modelos Lasso, Ridge e Elastic Net apresentaram um desempenho excelente na previsão da produção de 
+        energia elétrica, com valores de Mean Squared Error (MSE) próximos, variando de 21.10 a 21.18, e um R-squared (R2) 
+        de 0.93, indicando que eles conseguem explicar aproximadamente 93% da variabilidade nos dados. O modelo Lasso e o Ridge mostraram 
+        um desempenho idêntico, enquanto o Elastic Net, com uma leve ênfase em regularização L2, teve um MSE ligeiramente maior. Em resumo, 
+        todos os modelos são eficazes e bem ajustados, mostrando alta precisão e capacidade de previsão para as condições ambientais e operacionais analisadas.
+        """)
+    
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
         temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=60, value=25)
         vacuum = st.sidebar.slider("Pressão de Vácuo (cm Hg)", min_value=25, max_value=80, value=55)
         pressure = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=1010)
         humidity = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=50)
+        
 
         # Criar um dataframe com os dados de entrada
         input_data = pd.DataFrame({
