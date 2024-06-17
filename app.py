@@ -102,9 +102,10 @@ def main():
 
         # Normalizar os dados de entrada
         input_data_scaled = scaler.transform(input_data)
-
-
         st.write("""
+
+
+
 
 
             
@@ -123,7 +124,14 @@ def main():
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão Elastic Net: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MW</span></h1>", unsafe_allow_html=True)
+        st.write("""
 
+
+
+
+
+            
+        """)
         # Previsão mensal com valores aleatórios
         st.subheader("Previsão Mensal com Valores Aleatórios")
         days = np.arange(1, 31)
