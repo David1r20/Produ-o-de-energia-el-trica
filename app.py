@@ -212,7 +212,23 @@ def main():
         
         # Mostrar gráfico no Streamlit
         st.pyplot(fig)
+        # Conclusão
+        st.subheader("Conclusão")
+        st.write("""
+        Após realizar a análise e treinamento dos modelos de regressão Lasso, Ridge e ElasticNet, observamos que todos os modelos 
+        apresentaram um desempenho satisfatório na previsão da produção de energia elétrica. As métricas de avaliação, como o Mean 
+        Squared Error (MSE) e o R-squared (R2), indicam que os modelos são capazes de explicar aproximadamente 93% da variabilidade 
+        nos dados, com valores de MSE próximos entre 21.10 e 21.18. Isso demonstra uma alta precisão e capacidade de previsão para 
+        as condições ambientais e operacionais analisadas.
         
+        Adicionalmente, a visualização das distribuições das variáveis e a matriz de correlação ajudaram a entender melhor a 
+        relação entre as variáveis, contribuindo para a escolha e ajuste dos modelos. A análise de previsão mensal com valores 
+        aleatórios forneceu uma perspectiva sobre possíveis variações na produção de energia ao longo do tempo, enquanto o gráfico 
+        de previsão vs real mostrou a acuracidade das previsões em comparação com os valores reais.
+        
+        Em resumo, os modelos Lasso, Ridge e ElasticNet são eficazes e bem ajustados, mostrando-se adequados para aplicações 
+        práticas na previsão da produção de energia elétrica com base em variáveis ambientais e operacionais.
+        """)
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
