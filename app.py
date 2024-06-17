@@ -13,21 +13,7 @@ data = pd.read_csv(url)
 
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
-    st.write("""
-    Este conjunto de dados contém dados operacionais de uma usina de energia, detalhando vários fatores ambientais e operacionais,
-    juntamente com a produção líquida de energia elétrica por hora. Será analisado a influência das condições ambientais no
-    desempenho da usina e pode ser usado para modelagem preditiva e estudos de otimização.
-    
-    **Características:**
-    - Temperatura média: Temperatura ambiente média (em Celsius).
-    - Vácuo de exaustão: Pressão de vácuo do vapor que sai da turbina (em cm Hg).
-    - Pressão ambiente: Pressão ambiente (em milibares).
-    - Umidade relativa: Umidade relativa (%).
-    - Produção líquida de energia elétrica horária: Produção líquida de energia elétrica horária (em MW).
-    
-    **Uso:**
-    Este conjunto de dados será usado para análise de regressão Lasso, Ridge e Elastic net.
-    """)
+
     try:
         st.subheader("Dados do Dataset")
         st.write(data.head())
@@ -41,40 +27,50 @@ def main():
         X_scaled = scaler.fit_transform(X)
 
         # Dividir os dados em conjuntos de treino e teste (80% treino, 20% teste)
-        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.15, random_state=45)
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
-        # Definir os parâmetros para a busca por grid
-        param_grid = {
-            'alpha': [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
-        }
+        # Configurar parâmetros para GridSearch
+        param_grid_lasso = {'alpha': np.logspace(-4, 1, 100)}
+        param_grid_ridge = {'alpha': np.logspace(-4, 1, 100)}
+        param_grid_elastic = {'alpha': np.logspace(-4, 1, 100), 'l1_ratio': np.linspace(0, 1, 100)}
 
         # Configurar modelos Lasso, Ridge e ElasticNet
         lasso = Lasso()
         ridge = Ridge()
         elastic = ElasticNet()
 
-        # Realizar busca por grid para Lasso
-        grid_search_lasso = GridSearchCV(estimator=lasso, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        # Realizar GridSearch para Lasso
+        grid_search_lasso = GridSearchCV(lasso, param_grid_lasso, cv=5, scoring='neg_mean_squared_error')
         grid_search_lasso.fit(X_train, y_train)
         best_alpha_lasso = grid_search_lasso.best_params_['alpha']
-        best_model_lasso = grid_search_lasso.best_estimator_
+        best_mse_lasso = -grid_search_lasso.best_score_
 
-        # Realizar busca por grid para Ridge
-        grid_search_ridge = GridSearchCV(estimator=ridge, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        # Realizar GridSearch para Ridge
+        grid_search_ridge = GridSearchCV(ridge, param_grid_ridge, cv=5, scoring='neg_mean_squared_error')
         grid_search_ridge.fit(X_train, y_train)
         best_alpha_ridge = grid_search_ridge.best_params_['alpha']
-        best_model_ridge = grid_search_ridge.best_estimator_
+        best_mse_ridge = -grid_search_ridge.best_score_
 
-        # Realizar busca por grid para ElasticNet
-        grid_search_elastic = GridSearchCV(estimator=elastic, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+        # Realizar GridSearch para ElasticNet
+        grid_search_elastic = GridSearchCV(elastic, param_grid_elastic, cv=5, scoring='neg_mean_squared_error')
         grid_search_elastic.fit(X_train, y_train)
         best_alpha_elastic = grid_search_elastic.best_params_['alpha']
-        best_model_elastic = grid_search_elastic.best_estimator_
+        best_l1_ratio_elastic = grid_search_elastic.best_params_['l1_ratio']
+        best_mse_elastic = -grid_search_elastic.best_score_
 
-        # Avaliar os modelos ajustados com os melhores parâmetros
-        y_pred_lr = best_model_lasso.predict(X_test)
-        y_pred_ridge = best_model_ridge.predict(X_test)
-        y_pred_elastic = best_model_elastic.predict(X_test)
+        # Ajustar os modelos com os melhores parâmetros encontrados
+        lasso_best = Lasso(alpha=best_alpha_lasso)
+        ridge_best = Ridge(alpha=best_alpha_ridge)
+        elastic_best = ElasticNet(alpha=best_alpha_elastic, l1_ratio=best_l1_ratio_elastic)
+
+        lasso_best.fit(X_train, y_train)
+        ridge_best.fit(X_train, y_train)
+        elastic_best.fit(X_train, y_train)
+
+        # Avaliar os modelos ajustados
+        y_pred_lr = lasso_best.predict(X_test)
+        y_pred_ridge = ridge_best.predict(X_test)
+        y_pred_elastic = elastic_best.predict(X_test)
 
         mse_lr = mean_squared_error(y_test, y_pred_lr)
         mse_ridge = mean_squared_error(y_test, y_pred_ridge)
@@ -93,10 +89,10 @@ def main():
         st.write(f"   Mean Squared Error (MSE): {mse_ridge:.2f}")
         st.write(f"   R-squared (R2): {r2_ridge:.2f}")
 
-        st.write(f"**Modelo Elastic Net Regression (Alpha: {best_alpha_elastic}):**")
+        st.write(f"**Modelo Elastic Net Regression (Alpha: {best_alpha_elastic}, L1 Ratio: {best_l1_ratio_elastic}):**")
         st.write(f"   Mean Squared Error (MSE): {mse_elastic:.2f}")
         st.write(f"   R-squared (R2): {r2_elastic:.2f}")
-        
+
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
         temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=40, value=25)
@@ -114,11 +110,13 @@ def main():
 
         # Normalizar os dados de entrada
         input_data_scaled = scaler.transform(input_data)
+        st.write("""
 
-        # Fazer previsões com os modelos ajustados com os melhores parâmetros
-        predicted_energy_output_lasso = best_model_lasso.predict(input_data_scaled)[0]
-        predicted_energy_output_ridge = best_model_ridge.predict(input_data_scaled)[0]
-        predicted_energy_output_elastic = best_model_elastic.predict(input_data_scaled)[0]
+        """)
+        # Fazer previsões com os modelos ajustados
+        predicted_energy_output_lasso = lasso_best.predict(input_data_scaled)[0]
+        predicted_energy_output_ridge = ridge_best.predict(input_data_scaled)[0]
+        predicted_energy_output_elastic = elastic_best.predict(input_data_scaled)[0]
 
         st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
@@ -129,14 +127,7 @@ def main():
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão Elastic Net: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MW</span></h1>", unsafe_allow_html=True)
-        st.write("""
 
-
-
-
-
-            
-        """)
         # Previsão mensal com valores aleatórios
         st.subheader("Previsão Mensal com Valores Aleatórios")
         days = np.arange(1, 31)
@@ -154,9 +145,9 @@ def main():
 
         monthly_data_scaled = scaler.transform(monthly_data)
 
-        predictions_lasso = lasso.predict(monthly_data_scaled)
-        predictions_ridge = ridge.predict(monthly_data_scaled)
-        predictions_elastic = elastic.predict(monthly_data_scaled)
+        predictions_lasso = lasso_best.predict(monthly_data_scaled)
+        predictions_ridge = ridge_best.predict(monthly_data_scaled)
+        predictions_elastic = elastic_best.predict(monthly_data_scaled)
 
         fig, ax = plt.subplots()
         ax.plot(days, predictions_lasso, label='Lasso Regression', color='blue')
@@ -168,7 +159,7 @@ def main():
         ax.legend()
         st.pyplot(fig)
         
-    except Exception as e:
+    except Exception as:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
 if __name__ == "__main__":
