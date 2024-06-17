@@ -46,8 +46,8 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
         # Definir valores fixos para alpha
-        alpha_lasso = 0.01
-        alpha_ridge = 1.0
+        alpha_lasso = 0.1
+        alpha_ridge = 0.1
 
         # Configurar modelos Lasso e Ridge
         lasso = Lasso(alpha=alpha_lasso)
