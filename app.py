@@ -46,8 +46,8 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.08, random_state=45)
 
         # Definir valores fixos para alpha
-        alpha_lasso = 0.1
-        alpha_ridge = 0.1
+        alpha_lasso = 0.01
+        alpha_ridge = 1.0
 
         # Configurar modelos Lasso e Ridge
         lasso = Lasso(alpha=alpha_lasso)
@@ -113,6 +113,13 @@ def main():
         ax.legend()
         st.pyplot(fig)
 
+        # Mostrar previsões reais
+        st.subheader("Previsões para Conjunto de Teste")
+        st.write(f"**Modelo Lasso Regression (Alpha: {alpha_lasso}):**")
+        st.write(f"   Previsão Média: {np.mean(y_pred_lr):.2f} MW")
+        st.write(f"**Modelo Ridge Regression (Alpha: {alpha_ridge}):**")
+        st.write(f"   Previsão Média: {np.mean(y_pred_ridge):.2f} MW")
+        
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo CSV: {e}")
 
