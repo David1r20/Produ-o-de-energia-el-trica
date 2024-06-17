@@ -13,7 +13,31 @@ data = pd.read_csv(url)
 
 def main():
     st.title("Previsão de Produção de Energia Elétrica")
-
+    
+    # Introdução ao Streamlit
+    st.header("Visão Geral da Aplicação")
+    st.write("""
+    Este conjunto de dados contém informações detalhadas sobre as condições operacionais de uma usina de energia, 
+    incluindo aspectos ambientais como temperatura média, pressão de vácuo, pressão ambiente e umidade relativa, 
+    além da produção líquida de energia elétrica por hora. A análise desses dados é crucial para entender como 
+    cada variável afeta a geração de energia e para desenvolver modelos preditivos que possam ajudar na 
+    otimização do desempenho da usina.
+    
+    ### Características do Conjunto de Dados:
+    - **Temperatura Média:** Temperatura ambiente média (em Celsius).
+    - **Vácuo de Exaustão:** Pressão de vácuo do vapor que sai da turbina (em cm Hg).
+    - **Pressão Ambiente:** Pressão ambiente (em milibares).
+    - **Umidade Relativa:** Umidade relativa (%).
+    - **Produção Líquida de Energia Elétrica Horária:** Produção líquida de energia elétrica horária (em MW).
+    
+    ### Aplicação do Código:
+    Este código realiza uma análise de regressão e aplica modelos de aprendizado de máquina para prever a produção 
+    de energia elétrica com base nas condições ambientais e operacionais. O modelo é treinado com dados normalizados, 
+    e os usuários podem ajustar os parâmetros para prever a produção de energia em diferentes cenários. 
+    Além disso, o código gera previsões mensais com valores aleatórios, proporcionando uma visão abrangente das 
+    possíveis variações na produção de energia ao longo do tempo.
+    """)
+    
     try:
         st.subheader("Dados do Dataset")
         st.write(data.head())
@@ -94,15 +118,15 @@ def main():
         predicted_energy_output_ridge = ridge.predict(input_data_scaled)[0]
         predicted_energy_output_elastic = elastic.predict(input_data_scaled)[0]
 
-        st.subheader("**Previsões de Produção de Energia**")
+        st.subheader("Previsões de Produção de Energia")
         st.markdown(f"### **Modelo Lasso Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Lasso: {predicted_energy_output_lasso:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Lasso: <span style='color: red;'>{predicted_energy_output_lasso:.2f} MW</span></h1>", unsafe_allow_html=True)
         
         st.markdown(f"### **Modelo Ridge Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Ridge: {predicted_energy_output_ridge:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Ridge: <span style='color: red;'>{predicted_energy_output_ridge:.2f} MW</span></h1>", unsafe_allow_html=True)
 
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
-        st.markdown(f"<h1 style='text-align: center; color: white;'>Previsão Elastic Net: {predicted_energy_output_elastic:.2f} MW</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center;'>Previsão Elastic Net: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MW</span></h1>", unsafe_allow_html=True)
 
         # Previsão mensal com valores aleatórios
         st.subheader("Previsão Mensal com Valores Aleatórios")
@@ -126,9 +150,9 @@ def main():
         predictions_elastic = elastic.predict(monthly_data_scaled)
 
         fig, ax = plt.subplots()
-        ax.plot(days, predictions_lasso, label='Lasso Regression', color='red')
-        ax.plot(days, predictions_ridge, label='Ridge Regression', color='green')
-        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='blue')
+        ax.plot(days, predictions_lasso, label='Lasso Regression', color='blue')
+        ax.plot(days, predictions_ridge, label='Ridge Regression', color='red')
+        ax.plot(days, predictions_elastic, label='Elastic Net Regression', color='grey')
         ax.set_xlabel('Dia do Mês')
         ax.set_ylabel('Produção de Energia (MW)')
         ax.set_title('Previsão de Produção de Energia Elétrica Mensal')
