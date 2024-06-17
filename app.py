@@ -63,7 +63,29 @@ def main():
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
         ax.set_title('Mapa de Calor da Matriz de Correlação')
         st.pyplot(fig)
-    
+            # Gráfico de Previsão vs Real
+        st.subheader("Previsão vs Real")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        # Scatter plot para Lasso
+        ax.scatter(y_test, y_pred_lr, color='blue', label='Lasso', alpha=0.6)
+        
+        # Scatter plot para Ridge
+        ax.scatter(y_test, y_pred_ridge, color='red', label='Ridge', alpha=0.6)
+        
+        # Scatter plot para ElasticNet
+        ax.scatter(y_test, y_pred_elastic, color='green', label='ElasticNet', alpha=0.6)
+        
+        # Adicionar linhas de referência
+        ax.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'k--', lw=2)
+        
+        # Configurações do gráfico
+        ax.set_xlabel('Produção Real (MW)')
+        ax.set_ylabel('Produção Prevista (MW)')
+        ax.set_title('Comparação entre Produção Real e Produção Prevista')
+        ax.legend()
+        st.pyplot(fig)
+        
         # Definir variáveis independentes (X) e dependente (y)
         X = data[['Avg temperature', 'Exhaust vacuum', 'Ambient pressure', 'Relative humidity']]
         y = data['Net hourly electrical energy output']
@@ -156,28 +178,7 @@ def main():
     
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MWh</span></h1>", unsafe_allow_html=True)
-        # Gráfico de Previsão vs Real
-        st.subheader("Previsão vs Real")
-        fig, ax = plt.subplots(figsize=(10, 6))
         
-        # Scatter plot para Lasso
-        ax.scatter(y_test, y_pred_lr, color='blue', label='Lasso', alpha=0.6)
-        
-        # Scatter plot para Ridge
-        ax.scatter(y_test, y_pred_ridge, color='red', label='Ridge', alpha=0.6)
-        
-        # Scatter plot para ElasticNet
-        ax.scatter(y_test, y_pred_elastic, color='green', label='ElasticNet', alpha=0.6)
-        
-        # Adicionar linhas de referência
-        ax.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'k--', lw=2)
-        
-        # Configurações do gráfico
-        ax.set_xlabel('Produção Real (MW)')
-        ax.set_ylabel('Produção Prevista (MW)')
-        ax.set_title('Comparação entre Produção Real e Produção Prevista')
-        ax.legend()
-        st.pyplot(fig)
         # Seção de previsão mensal
         st.subheader("Previsão Mensal com Valores Aleatórios")
         days = np.arange(1, 31)
