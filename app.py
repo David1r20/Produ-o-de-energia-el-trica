@@ -31,7 +31,7 @@ def main():
 
         # Definir valores fixos para alpha
         alpha_lasso = 0.01
-        alpha_ridge = 1.0
+        alpha_ridge = 0.001
 
         # Configurar modelos Lasso e Ridge
         lasso = Lasso(alpha=alpha_lasso)
