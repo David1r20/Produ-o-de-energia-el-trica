@@ -102,7 +102,7 @@ def main():
         um desempenho idêntico, enquanto o Elastic Net, com uma leve ênfase em regularização L2, teve um MSE ligeiramente maior. Em resumo, 
         todos os modelos são eficazes e bem ajustados, mostrando alta precisão e capacidade de previsão para as condições ambientais e operacionais analisadas.
         """)
-    
+
         # Widgets para entrada de parâmetros de previsão
         st.sidebar.header("Parâmetros de Previsão")
         temperature = st.sidebar.slider("Temperatura Média (°C)", min_value=0, max_value=60, value=25)
@@ -110,7 +110,6 @@ def main():
         pressure = st.sidebar.slider("Pressão Ambiente (mbar)", min_value=900, max_value=1100, value=1010)
         humidity = st.sidebar.slider("Umidade Relativa (%)", min_value=0, max_value=100, value=50)
         
-
         # Criar um dataframe com os dados de entrada
         input_data = pd.DataFrame({
             'Avg temperature': [temperature],
@@ -137,7 +136,7 @@ def main():
         st.markdown(f"### **Modelo Elastic Net Regression**", unsafe_allow_html=True)
         st.markdown(f"<h1 style='text-align: center;'>Previsão: <span style='color: red;'>{predicted_energy_output_elastic:.2f} MWh</span></h1>", unsafe_allow_html=True)
 
-        # Previsão mensal com valores aleatórios
+        # Seção de previsão mensal
         st.subheader("Previsão Mensal com Valores Aleatórios")
         days = np.arange(1, 31)
         temperatures = np.random.uniform(temperature - 5, temperature + 5, size=30)
@@ -166,6 +165,8 @@ def main():
         ax.set_ylabel('Produção de Energia (MW)')
         ax.set_title('Previsão de Produção de Energia Elétrica Mensal')
         ax.legend()
+        
+        # Mostrar gráfico no Streamlit
         st.pyplot(fig)
         
     except Exception as e:
